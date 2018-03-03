@@ -4,4 +4,4 @@ server:
 spring:
     data:
         mongodb:
-            database: patrimonium
+            database: heroku_8350vf3c
