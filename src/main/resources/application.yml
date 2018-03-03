@@ -1,0 +1,9 @@
+jwt:
+    secret: ${jwt.secret}
+    expiration: 28800000
+    
+---
+
+user:
+    super:
+        password: ${user.super.password}
