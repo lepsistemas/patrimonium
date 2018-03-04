@@ -16,8 +16,6 @@ import com.mongodb.Mongo;
 @Import(value = MongoAutoConfiguration.class)
 public class MongoConfiguration extends AbstractMongoConfiguration {
 
-//	private final Logger log = LoggerFactory.getLogger(MongoConfiguration.class);
-
 	@Autowired
 	private Mongo mongo;
 
