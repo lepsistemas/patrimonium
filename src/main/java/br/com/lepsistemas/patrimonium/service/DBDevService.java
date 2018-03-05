@@ -39,7 +39,17 @@ public class DBDevService {
 				.roles(new HashSet<>(Arrays.asList(Role.SUPER, Role.ADMIN, Role.USER)))
 				.build();
 		
-		userRepository.save(superUser);
+		User normalUser = User
+				.builder()
+				.username("user@gmail.com")
+				.password(encoder.encode("user"))
+				.name("User")
+				.enabled(true)
+				.expire(null)
+				.roles(new HashSet<>(Arrays.asList(Role.USER)))
+				.build();
+		
+		userRepository.save(Arrays.asList(superUser, normalUser));
 	}
 
 }
