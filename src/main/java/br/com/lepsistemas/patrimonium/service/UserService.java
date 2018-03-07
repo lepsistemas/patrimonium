@@ -1,5 +1,7 @@
 package br.com.lepsistemas.patrimonium.service;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,12 @@ public class UserService {
 	}
 	
 	public User findByUsername(String username) {
+		UserSecurity authenticated = UserService.authenticated();
+		if (!authenticated.hasRole(Role.SUPER) && !authenticated.hasRole(Role.ADMIN)) {
+			if (!authenticated.getUsername().equals(username)) {
+				throw new AuthorizationException("Not authorized to retrieve user with username: " + username);
+			}
+		}
 		User user = userRepository.findByUsername(username);
 		if (user == null) {
 			throw new NotFoundException("User not found with username: " + username);
@@ -44,6 +52,12 @@ public class UserService {
 	}
 	
 	public User findById(String id) {
+		UserSecurity authenticated = UserService.authenticated();
+		if (!authenticated.hasRole(Role.SUPER) && !authenticated.hasRole(Role.ADMIN)) {
+			if (!authenticated.getId().equals(id)) {
+				throw new AuthorizationException("Not authorized to retrieve user with id: " + id);
+			}
+		}
 		User user = userRepository.findOne(id);
 		if (user == null) {
 			throw new NotFoundException("User not found with id: " + id);
@@ -51,11 +65,22 @@ public class UserService {
 		return user;
 	}
 	
-	public User insert(User user) {
-		return userRepository.insert(user);
+	public User saveSuper(User user) {
+		user.setRoles(new HashSet<Role>(Arrays.asList(Role.SUPER, Role.ADMIN, Role.USER)));
+		return save(user);
 	}
 	
-	public User save(User user) {
+	public User saveAdmin(User user) {
+		user.setRoles(new HashSet<Role>(Arrays.asList(Role.ADMIN, Role.USER)));
+		return save(user);
+	}
+	
+	public User saveUser(User user) {
+		user.setRoles(new HashSet<Role>(Arrays.asList(Role.USER)));
+		return save(user);
+	}
+	
+	private User save(User user) {
 		return userRepository.save(user);
 	}
 	

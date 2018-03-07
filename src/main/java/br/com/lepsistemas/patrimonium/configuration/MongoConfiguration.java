@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.mongodb.Mongo;
@@ -30,6 +31,11 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
 	@Bean
 	public LocalValidatorFactoryBean validator() {
 		return new LocalValidatorFactoryBean();
+	}
+
+	@Bean
+	public GridFsTemplate gridFsTemplate() throws Exception {
+		return new GridFsTemplate(mongoDbFactory(), mappingMongoConverter());
 	}
 
 	@Override

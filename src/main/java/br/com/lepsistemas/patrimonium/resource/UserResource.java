@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,13 @@ public class UserResource {
 		List<User> users = userService.findAll();
 		List<UserDTO> dtos = users.stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(dtos);
+	}
+	
+	@PreAuthorize("hasAnyRole('SUPER', 'ADMIN')")
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> delete(@PathVariable String id) {
+		userService.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@GetMapping("/{id}")
