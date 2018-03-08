@@ -25,7 +25,7 @@ import br.com.lepsistemas.patrimonium.security.JWtAuthorizationFilter;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	private static final String[] PUBLIC = { "/public/**" };
+	private static final String[] PUBLIC = { "/wake/**", "/register/**" };
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
