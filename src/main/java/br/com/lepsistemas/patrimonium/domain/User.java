@@ -11,6 +11,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.lepsistemas.patrimonium.dto.RegisterDTO;
+import br.com.lepsistemas.patrimonium.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -43,6 +45,19 @@ public class User implements Serializable {
 	private Date expire;
 	
 	private Set<Role> roles;
+
+	public User(RegisterDTO dto) {
+		this.username = dto.getUsername();
+		this.name = dto.getName();
+	}
+	
+	public User(UserDTO dto) {
+		this.id = dto.getId();
+		this.username = dto.getUsername();
+		this.name = dto.getName();
+		this.enabled = dto.isEnabled();
+		this.expire = dto.getExpire();
+	}
 	
 	@Transient
 	public boolean isSuper() {

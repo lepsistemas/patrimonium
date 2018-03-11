@@ -25,7 +25,9 @@ import br.com.lepsistemas.patrimonium.security.JWtAuthorizationFilter;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	private static final String[] PUBLIC = { "/wake/**", "/register/**" };
+	private static final String[] PUBLIC_GET = { "/wake/**" };
+	
+	private static final String[] PUBLIC_POST = { "/login", "/users/register/**" };
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -37,9 +39,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.headers().frameOptions().disable();
 		http.cors().and().csrf().disable();
+		
 		http.authorizeRequests()
-			.antMatchers(PUBLIC).permitAll()
+			.antMatchers(HttpMethod.GET, PUBLIC_GET).permitAll()
+			.antMatchers(HttpMethod.POST, PUBLIC_POST).permitAll()
 			.anyRequest().authenticated();
+		
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWtAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

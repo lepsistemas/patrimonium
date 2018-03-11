@@ -1,6 +1,9 @@
 package br.com.lepsistemas.patrimonium.service;
 
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,7 +69,7 @@ public class DBDevService {
 					.password(encoder.encode("user"))
 					.name("User")
 					.enabled(true)
-					.expire(null)
+					.expire(Date.from(LocalDate.now().plusYears(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()))
 					.build();
 			userService.saveUser(normalUser);
 		}

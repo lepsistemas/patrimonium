@@ -1,11 +1,16 @@
 package br.com.lepsistemas.patrimonium.service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.lepsistemas.patrimonium.domain.Role;
@@ -20,6 +25,15 @@ public class UserService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private PasswordService passwordService;
+	
+	@Autowired
+	private BCryptPasswordEncoder encoder;
+	
+	@Autowired
+	private EmailService emailService;
 
 	public static UserSecurity authenticated() {
 		try {
@@ -77,11 +91,21 @@ public class UserService {
 	
 	public User saveUser(User user) {
 		user.setRoles(new HashSet<Role>(Arrays.asList(Role.USER)));
-		return save(user);
-	}
-	
-	private User save(User user) {
-		return userRepository.save(user);
+		
+		String password = passwordService.generateRandom();
+		user.setPassword(encoder.encode(password));
+		
+		user.setEnabled(true);
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.DATE, 90);
+		
+		user.setExpire(Date.from(LocalDate.now().plusYears(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+		
+		User saved = save(user);
+		emailService.sendPaswordEmail(user, password);
+		return saved;
 	}
 	
 	public void delete(String id) {
@@ -89,6 +113,21 @@ public class UserService {
 			throw new NotFoundException("User not found with id: " + id);
 		}
 		userRepository.delete(id);
+	}
+	
+	public User update(User user) {
+		User saved = userRepository.findOne(user.getId());
+		if (saved == null) {
+			throw new NotFoundException("User not found with id: " + user.getId());
+		}
+		saved.setName(user.getName());
+		saved.setEnabled(user.isEnabled());
+		saved.setExpire(user.getExpire());
+		return save(saved);
+	}
+	
+	private User save(User user) {
+		return userRepository.save(user);
 	}
 
 }
