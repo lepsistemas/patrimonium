@@ -1,10 +1,11 @@
 package br.com.lepsistemas.patrimonium.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
-import br.com.lepsistemas.patrimonium.domain.Role;
 import br.com.lepsistemas.patrimonium.domain.User;
+import br.com.lepsistemas.patrimonium.domain.User.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -16,7 +17,9 @@ import lombok.Setter;
 @Getter @Setter
 @Builder
 @EqualsAndHashCode(exclude= {"username", "name", "enabled", "expire", "roles"})
-public class UserDTO {
+public class UserDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	
 	private String id;
 	private String username;

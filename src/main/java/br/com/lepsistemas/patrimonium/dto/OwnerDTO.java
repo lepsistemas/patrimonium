@@ -2,7 +2,7 @@ package br.com.lepsistemas.patrimonium.dto;
 
 import java.io.Serializable;
 
-import br.com.lepsistemas.patrimonium.domain.Archive;
+import br.com.lepsistemas.patrimonium.domain.Owner;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -13,21 +13,21 @@ import lombok.Setter;
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
 @Builder
-@EqualsAndHashCode(exclude= {"name", "contentType", "file"})
-public class ArchiveDTO implements Serializable {
+@EqualsAndHashCode(exclude= {"name", "document"})
+public class OwnerDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private String id;
-	private String name;
-	private String contentType;
-	private byte[] file;
 	
-	public ArchiveDTO(Archive archive) {
-		this.id = archive.getId();
-		this.name = archive.getName();
-		this.contentType = archive.getContentType();
-		this.file = archive.getFile().getData();
+	private String name;
+	
+	private String document;
+	
+	public OwnerDTO(Owner owner) {
+		this.id = owner.getId();
+		this.name = owner.getName();
+		this.document = owner.getDocument();
 	}
 
 }

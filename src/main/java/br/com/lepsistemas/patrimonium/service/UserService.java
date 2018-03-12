@@ -13,8 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import br.com.lepsistemas.patrimonium.domain.Role;
 import br.com.lepsistemas.patrimonium.domain.User;
+import br.com.lepsistemas.patrimonium.domain.User.Role;
 import br.com.lepsistemas.patrimonium.repository.UserRepository;
 import br.com.lepsistemas.patrimonium.security.UserSecurity;
 import br.com.lepsistemas.patrimonium.service.exception.AuthorizationException;

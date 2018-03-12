@@ -8,8 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import br.com.lepsistemas.patrimonium.domain.Role;
 import br.com.lepsistemas.patrimonium.domain.User;
+import br.com.lepsistemas.patrimonium.domain.User.Role;
 
 public class UserSecurity implements UserDetails {
 

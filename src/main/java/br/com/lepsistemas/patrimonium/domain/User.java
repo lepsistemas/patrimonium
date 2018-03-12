@@ -23,7 +23,7 @@ import lombok.Setter;
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
 @Builder
-@EqualsAndHashCode(exclude= {"username", "password"})
+@EqualsAndHashCode(exclude= {"username", "password", "name", "enabled", "expire", "roles"})
 @Document
 public class User implements Serializable {
 
@@ -73,6 +73,31 @@ public class User implements Serializable {
 			return false;
 		}
 		return roles.contains(Role.ADMIN);
+	}
+	
+	public enum Role {
+		
+		SUPER("SUPER"), ADMIN("ADMIN"), USER("USER");
+		
+		private String name;
+		
+		Role(String name) {
+			this.setName(name);
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public String toString() {
+			return name;
+		}
+
 	}
 
 }
