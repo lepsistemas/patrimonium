@@ -11,7 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.lepsistemas.patrimonium.domain.User;
-import br.com.lepsistemas.patrimonium.repository.ArchiveRepository;
+import br.com.lepsistemas.patrimonium.repository.RealStateRepository;
 import br.com.lepsistemas.patrimonium.repository.UserRepository;
 
 @Service
@@ -27,14 +27,14 @@ public class DBDevService {
 	private UserRepository userRepository;
 	
 	@Autowired
-	private ArchiveRepository archiveRepository;
+	private RealStateRepository realStateRepository;
 	
 	@Autowired
 	private UserService userService;
 
 	public void instantiateDatabase() throws ParseException {
 		
-		archiveRepository.deleteAll();
+		realStateRepository.deleteAll();
 		
 		User superUserDB = userRepository.findByUsername("super@gmail.com");
 		if (superUserDB == null) {
